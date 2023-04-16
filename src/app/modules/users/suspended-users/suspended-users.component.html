@@ -1,0 +1,94 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Suspended Users</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Users</a></li>
+                    <li class="breadcrumb-item active">Suspended Users</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="dataTables_wrapper dt-bootstrap4">
+                    <table datatable [dtTrigger]="dtTrigger" class="table table-bordered table-hover dataTable dtr-inline">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Mobile Number</th>
+                            <th>Points Claimed</th>
+                            <th>Comment</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let element of users" class="table-row">
+             
+                            <td>{{element.FIRST_NAME}} {{element.LAST_NAME}}</td>
+                            <td>{{element.MOBILE_NUMBER}}</td>
+                            <td>{{element.POINTS_CLAIMED}}</td>
+                            <td>
+                                {{element.COMMENT}}
+                            </td>
+            
+                            <td  class="d-flex" style="justify-content: center;">
+            
+                                <button class="btn btn-success" (click)="open(approveRejectModal, element, 'Approve')">Approve</button>
+                            </td>
+                     
+                      
+                          </tr>     
+                        </tbody>
+                      </table>
+                </div>
+                <div class="p-2" *ngIf="users.length === 0">
+                    <p class="m-0 text-center">No Suspened Users Found.</p>
+                </div>
+                  
+            </div>
+            <!-- /.card-body -->
+            
+            <!-- /.card-footer-->
+        </div>
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->
+
+<ng-template #approveRejectModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title m-0" id="modal-basic-title">Confirmation</h4>
+    </div>
+    <div class="modal-body">
+        <h5>Are you sure you want to {{(modalAction).toLowerCase()}}?</h5>
+        <p class="m-0"><span class="font-weight-bold">Name:</span> {{selectedData.FIRST_NAME}} {{selectedData.LAST_NAME}}</p>
+        <p class="m-0"><span class="font-weight-bold">Mobile Number:</span> {{selectedData.MOBILE_NUMBER}}</p>
+        <input [ngClass]="[modalAction === 'Approve' ? 'd-none' : 'mt-2 form-control']" type="text" #suspendRejectReason [placeholder]="[modalAction+' Reason (optional)']"/>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+        [disabled]="isLoading">Close</button>
+        <!-- <button [ngClass]="[modalAction ==='Approve' ? 'btn btn-success' : 'btn btn-danger']"
+        (click)="updateUserStatus(modalAction, suspendRejectReason.value)">{{modalAction}}</button>     -->
+    <pf-button
+        [theme]="[modalAction === 'Approve' ? 'success' : 'danger']"
+        [loading]="isLoading"
+        (click)="updateUserStatus(modalAction, suspendRejectReason.value)"
+        >
+        {{modalAction}}
+    </pf-button>
+
+    </div>
+</ng-template>

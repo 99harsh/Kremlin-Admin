@@ -43,3 +43,14 @@ body {
 .nav-sidebar .menu-open > .nav-link svg.right {
     transform: none;
 }
+
+.loading-hide{
+    opacity: 0;
+    z-index: 0!important;
+}
+
+.loading-show{
+    opacity: 1;
+    // transition: opacity 0.2s linear;
+
+}

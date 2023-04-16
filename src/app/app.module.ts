@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import {AppRoutingModule} from '@/app-routing.module';
 import {AppComponent} from './app.component';
@@ -16,15 +16,11 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RegisterComponent} from '@modules/register/register.component';
 import {DashboardComponent} from '@pages/dashboard/dashboard.component';
 import {ToastrModule} from 'ngx-toastr';
-import {MessagesComponent} from '@modules/main/header/messages/messages.component';
-import {NotificationsComponent} from '@modules/main/header/notifications/notifications.component';
 
 import {registerLocaleData} from '@angular/common';
 import localeEn from '@angular/common/locales/en';
 import {UserComponent} from '@modules/main/header/user/user.component';
 import {ForgotPasswordComponent} from '@modules/forgot-password/forgot-password.component';
-import {RecoverPasswordComponent} from '@modules/recover-password/recover-password.component';
-import {LanguageComponent} from '@modules/main/header/language/language.component';
 import {MainMenuComponent} from './pages/main-menu/main-menu.component';
 import {SubMenuComponent} from './pages/main-menu/sub-menu/sub-menu.component';
 import {MenuItemComponent} from './components/menu-item/menu-item.component';
@@ -35,6 +31,8 @@ import {uiReducer} from './store/ui/reducer';
 import {ProfabricComponentsModule} from '@profabric/angular-components';
 import {defineCustomElements} from '@profabric/web-components/loader';
 import {SidebarSearchComponent} from './components/sidebar-search/sidebar-search.component';
+import { LoadingComponent } from './pages/loading/loading.component';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
 
 defineCustomElements();
 registerLocaleData(localeEn, 'en-EN');
@@ -51,17 +49,14 @@ registerLocaleData(localeEn, 'en-EN');
         ProfileComponent,
         RegisterComponent,
         DashboardComponent,
-        MessagesComponent,
-        NotificationsComponent,
         UserComponent,
         ForgotPasswordComponent,
-        RecoverPasswordComponent,
-        LanguageComponent,
         MainMenuComponent,
         SubMenuComponent,
         MenuItemComponent,
         ControlSidebarComponent,
-        SidebarSearchComponent
+        SidebarSearchComponent,
+        LoadingComponent
     ],
     imports: [
         BrowserModule,
@@ -77,7 +72,11 @@ registerLocaleData(localeEn, 'en-EN');
         }),
         ProfabricComponentsModule
     ],
-    providers: [],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -1,0 +1,56 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Claimed Transactions</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Transactions</a></li>
+                    <li class="breadcrumb-item active">Claimed Transactions
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="dataTables_wrapper dt-bootstrap4">
+                    <table datatable [dtTrigger]="dtTrigger" class="table table-bordered table-hover dataTable dtr-inline">
+                        <thead>
+                          <tr>
+                            <th>SL No.</th>
+                            <th>Name</th>
+                            <th>Points Claimed</th>
+                            <th>Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let element of transactionData; let i = index" class="table-row">
+                            <td>{{i+1}}</td>
+                            <td>{{element.NAME}}</td>
+                            <td>{{ element.POINTS }}</td>
+                            <td>{{ formatDate(element.TRNX_TS) }}</td>
+                          </tr>     
+                        </tbody>
+                      </table>
+
+                      <div class="p-2" *ngIf="transactionData.length === 0">
+                            <p class="m-0 text-center">No Data Found</p>
+                      </div>
+                </div> 
+            </div>
+            <!-- /.card-body -->
+            <!-- /.card-footer-->
+        </div>
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->

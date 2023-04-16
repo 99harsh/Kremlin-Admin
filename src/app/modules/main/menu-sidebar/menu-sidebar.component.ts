@@ -1,9 +1,9 @@
-import {AppState} from '@/store/state';
-import {UiState} from '@/store/ui/state';
-import {Component, HostBinding, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AppService} from '@services/app.service';
-import {Observable} from 'rxjs';
+import { AppState } from '@/store/state';
+import { UiState } from '@/store/ui/state';
+import { Component, HostBinding, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppService } from '@services/app.service';
+import { Observable } from 'rxjs';
 
 const BASE_CLASSES = 'main-sidebar elevation-4';
 @Component({
@@ -20,7 +20,7 @@ export class MenuSidebarComponent implements OnInit {
     constructor(
         public appService: AppService,
         private store: Store<AppState>
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.ui = this.store.select('ui');
@@ -28,6 +28,7 @@ export class MenuSidebarComponent implements OnInit {
             this.classes = `${BASE_CLASSES} ${state.sidebarSkin}`;
         });
         this.user = this.appService.user;
+        console.log("USER", this.user)
     }
 }
 
@@ -38,24 +39,61 @@ export const MENU = [
         path: ['/']
     },
     {
-        name: 'Blank',
-        iconClasses: 'fas fa-file',
-        path: ['/blank']
-    },
-    {
-        name: 'Main Menu',
-        iconClasses: 'fas fa-folder',        
+        name: 'Users',
+        iconClasses: 'fas fa-users',
         children: [
             {
-                name: 'Sub Menu',
-                iconClasses: 'far fa-address-book',
-                path: ['/sub-menu-1']
+                name: 'All Users',
+                iconClasses: 'fas fa-user-check',
+                path: ['/users/all']
             },
             {
-                name: 'Blank',
-                iconClasses: 'fas fa-file',
-                path: ['/sub-menu-2']
+                name: "Active Users",
+                iconClasses: 'fas fa-users',
+                path: ['/users/active']
+            },
+
+            {
+                name: 'Pending Users',
+                iconClasses: 'fas fa-user-plus',
+                path: ['/users/pending']
+            },
+            {
+                name: "Suspended Users",
+                iconClasses: "fas fa-user-slash",
+                path: ['/users/suspended']
+            },
+            {
+                name: "Rejected Users",
+                iconClasses: "fas fa-user-slash",
+                path: ['/users/rejected']
             }
         ]
+    },
+    {
+        name:"QR Code",
+        iconClasses: 'fas fa-qrcode',
+        path: ['/qr/generate']
+    },
+    {
+        name: "Transaction",
+        iconClasses: 'fas fa-list',
+        children:[
+        {
+            name: "Claimed Transactions",
+            iconClasses: 'fas fa-list',
+            path: ['/transaction/claimed']
+        },
+        {
+            name: "Pending Transactions",
+            iconClasses: 'fas fa-list',
+            path: ['/transaction/pending']
+        },
+        {
+            name: "Settled Transactions",
+            iconClasses: 'fas fa-list',
+            path: ['/transaction/settled']
+        }
+    ]
     }
 ];

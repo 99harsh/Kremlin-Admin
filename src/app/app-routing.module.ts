@@ -9,7 +9,6 @@ import {DashboardComponent} from '@pages/dashboard/dashboard.component';
 import {AuthGuard} from '@guards/auth.guard';
 import {NonAuthGuard} from '@guards/non-auth.guard';
 import {ForgotPasswordComponent} from '@modules/forgot-password/forgot-password.component';
-import {RecoverPasswordComponent} from '@modules/recover-password/recover-password.component';
 import {MainMenuComponent} from '@pages/main-menu/main-menu.component';
 import {SubMenuComponent} from '@pages/main-menu/sub-menu/sub-menu.component';
 
@@ -20,22 +19,6 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
         children: [
-            {
-                path: 'profile',
-                component: ProfileComponent
-            },
-            {
-                path: 'blank',
-                component: BlankComponent
-            },
-            {
-                path: 'sub-menu-1',
-                component: SubMenuComponent
-            },
-            {
-                path: 'sub-menu-2',
-                component: BlankComponent
-            },
             {
                 path: '',
                 component: DashboardComponent
@@ -48,19 +31,16 @@ const routes: Routes = [
         canActivate: [NonAuthGuard]
     },
     {
-        path: 'register',
-        component: RegisterComponent,
-        canActivate: [NonAuthGuard]
+        path: 'users',
+        loadChildren:() => import('./modules/users/users.module').then(m=>m.UsersModule)
     },
     {
-        path: 'forgot-password',
-        component: ForgotPasswordComponent,
-        canActivate: [NonAuthGuard]
+        path: 'qr',
+        loadChildren:() => import('./modules/qr-code/qr-code.module').then(m=>m.QrCodeModule)
     },
     {
-        path: 'recover-password',
-        component: RecoverPasswordComponent,
-        canActivate: [NonAuthGuard]
+        path: 'transaction',
+        loadChildren: ()=> import('./modules/transaction/transaction.module').then(m=>m.TransactionModule)
     },
     {path: '**', redirectTo: ''}
 ];

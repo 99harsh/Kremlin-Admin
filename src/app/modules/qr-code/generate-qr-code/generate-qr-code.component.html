@@ -1,0 +1,113 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>QR Code</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">QR Code</a></li>
+                    <li class="breadcrumb-item active">Generate QR Code</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+        <form [formGroup]="qrCodeForm" (ngSubmit)="generateQRCode()">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Generate QR Code</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="counts">Counts</label>
+                        <input id="counts" type="text" class="form-control mb-2" formControlName="count" placeholder="Enter Count">
+                        <div *ngIf="qrCodeForm.get('count').touched && qrCodeForm.get('count').invalid">
+                            <span *ngIf="qrCodeForm.get('count').hasError('required')" class="text-danger">Please Enter Counts</span>
+                            <span *ngIf="qrCodeForm.get('count').hasError('pattern') ||
+                                        qrCodeForm.get('count').hasError('min') ||
+                                        qrCodeForm.get('count').hasError('max')
+                                        " class="text-danger">Please Enter Number Between 1-100</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="value">Value</label>
+                        <input id="value" type="text" class="form-control" formControlName="value" placeholder="Enter Value">
+                        <div *ngIf="qrCodeForm.get('value').touched && qrCodeForm.get('value').invalid">
+                            <span *ngIf="qrCodeForm.get('value').hasError('required')" class="text-danger">Please Enter Value</span>
+                            <span *ngIf="qrCodeForm.get('value').hasError('pattern') || 
+                                        qrCodeForm.get('value').hasError('min')
+                                        " class="text-danger">Please Enter Number > 1</span>
+                        </div>
+                    </div>                 
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <pf-button
+                    [type]="'submit'"
+                    [theme]="['primary']"
+                    [disabled]="true"
+                    [loading]="isLoading"
+                    
+                    >Generate</pf-button>
+                </div>
+                <div id="pdfTable" class="d-none" #pdfTable>
+                    <div class="container" style="display:flex">
+                        <ngx-qrcode 
+                        *ngFor="let qr of qrCodes"
+                        [elementType]="elementType"
+                        [errorCorrectionLevel]="connectionLevel"
+                        [value]="qr.QR_CODE"
+                        cssClass="coolQRCode"></ngx-qrcode>
+                      
+                     </div>
+                </div>
+                
+                <!-- /.card-footer-->
+            </div>
+        </form>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="dataTables_wrapper dt-bootstrap4">
+                    <table datatable [dtTrigger]="dtTrigger" class="table table-bordered table-hover dataTable dtr-inline">
+                        <thead>
+                          <tr>
+                            <th>SL No</th>
+                            <th>Counts</th>
+                            <th>Value</th>
+                            <th>Generation Date</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let element of qrBatch;let i = index" class="table-row">
+                            <td>{{i+1}}</td>
+                            <td>{{element.QR_COUNTS}}</td>
+                            <td>{{element.VALUE}}</td>
+                            <td>{{dateFormat(element.GENERATION_TS)}}</td>
+                            <td>
+                                <button class="btn btn-success"(click)="downloadQRCode(element.BATCH_ID, element.QR_COUNTS)">Download</button>
+                            </td>
+                          </tr>     
+                        </tbody>
+                      </table>                  
+                </div>
+
+                <div class="p-2" *ngIf="qrBatch.length === 0">
+                    <p class="m-0 text-center">No QR Codes Found.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /.card -->
+</section>
+<!-- /.content -->

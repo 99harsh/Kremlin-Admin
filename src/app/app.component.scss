@@ -2,3 +2,8 @@
     width: 100vw;
     height: 100vh;
 }
+
+::ng-deep .modal-backdrop{
+    z-index: 1040!important;
+}
+

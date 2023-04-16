@@ -1,0 +1,146 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>All Users</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Users</a></li>
+                    <li class="breadcrumb-item active">All Users</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="dataTables_wrapper dt-bootstrap4">
+                    <table datatable [dtTrigger]="dtTrigger" class="table table-bordered table-hover dataTable dtr-inline">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Mobile Number</th>
+                            <th>Points Claimed</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let element of users" class="table-row">
+             
+                            <td>{{element.FIRST_NAME}} {{element.LAST_NAME}}</td>
+                            <td>{{element.MOBILE_NUMBER}}</td>
+                            <td>{{element.POINTS_CLAIMED}}</td>
+                            <td>
+                                <span [ngClass]="[element.STATUS === 'SUSPENDED' ? 'text-danger' : element.STATUS === 'APPROVED' ? 'text-success' : 
+                                                element.STATUS === 'REJECTED' ? 'text-danger' : 'text-primary'
+                                            ]">{{(element.STATUS).replace("_", " ")}}</span>
+                            </td>
+                            <td *ngIf="element.STATUS === 'VERIFICATION_PENDING'" class="row" style="justify-content:center">
+                                <button class="btn btn-success mr-2" (click)="open(approveRejectModal, element, 'Approve')">Approve</button>
+                                <button class="btn btn-danger" (click)="open(approveRejectModal, element, 'Reject')">Reject</button>
+                                
+                            </td>
+                            <td *ngIf="element.STATUS === 'SUSPENDED'" class="d-flex" style="justify-content: center;">
+                                <button class="btn btn-primary mr-2" [disabled]="true">Edit</button>
+                                <button class="btn btn-success" (click)="open(approveRejectModal, element, 'Approve')">Approve</button>
+                            </td>
+                            <td *ngIf="element.STATUS === 'APPROVED'" class="d-flex" style="justify-content: center;">
+                                <button class="btn btn-primary mr-2">Edit</button>
+                                <button class="btn btn-danger" (click)="open(approveRejectModal, element, 'Suspend')">Suspend</button>
+                            </td>
+                            <td *ngIf="element.STATUS === 'REJECTED'" class="d-flex" style="justify-content: center;">
+                                <button class="btn btn-primary mr-2" (click)="openXl(editModal, element)">Edit</button>
+                                <button class="btn btn-danger" [disabled]="true">Suspend</button>
+                            </td>
+                          </tr>     
+                        </tbody>
+                      </table>                  
+                </div>
+
+                <div class="p-2" *ngIf="users.length === 0">
+                    <p class="m-0 text-center">No Users Found.</p>
+                </div>
+                  
+            </div>
+            <!-- /.card-body -->
+            
+            <!-- /.card-footer-->
+        </div>
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->
+
+<ng-template #approveRejectModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title m-0" id="modal-basic-title">Confirmation</h4>
+    </div>
+    <div class="modal-body">
+        <h5>Are you sure you want to {{(modalAction).toLowerCase()}}?</h5>
+        <p class="m-0"><span class="font-weight-bold">Name:</span> {{selectedData.FIRST_NAME}} {{selectedData.LAST_NAME}}</p>
+        <p class="m-0"><span class="font-weight-bold">Mobile Number:</span> {{selectedData.MOBILE_NUMBER}}</p>
+        <input [ngClass]="[modalAction === 'Approve' ? 'd-none' : 'mt-2 form-control']" type="text" #suspendRejectReason [placeholder]="[modalAction+' Reason (optional)']"/>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+        [disabled]="isLoading">Close</button>
+        <!-- <button [ngClass]="[modalAction ==='Approve' ? 'btn btn-success' : 'btn btn-danger']"
+        (click)="updateUserStatus(modalAction, suspendRejectReason.value)">{{modalAction}}</button>     -->
+    <pf-button
+        [theme]="[modalAction === 'Approve' ? 'success' : 'danger']"
+        [loading]="isLoading"
+        (click)="updateUserStatus(modalAction, suspendRejectReason.value)"
+        >
+        {{modalAction}}
+    </pf-button>
+
+    </div>
+</ng-template>
+
+
+<ng-template #editModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title m-0" id="modal-basic-title">Edit</h4>
+    </div>
+    <div class="modal-body">
+       <form>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Name</label>
+                    <input type="text" class="form-control" placeholder="Name" [disabled]="true" [value]="['Harsh Agrawa;']">
+                </div>
+                <div class="form-group col">
+                    <label>Mobile</label>
+                    <input type="text" class="form-control" placeholder="Name" [value]="['Harsh Agrawa;']">
+                </div>
+                <div class="form-group col">
+                    <label>Date Of Birth</label>
+                    <input type="text" class="form-control" placeholder="Name" [disabled]="true" [value]="['Harsh Agrawa;']">
+                </div>
+            </div>
+       </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+        [disabled]="isLoading">Close</button>
+        <!-- <button [ngClass]="[modalAction ==='Approve' ? 'btn btn-success' : 'btn btn-danger']"
+        (click)="updateUserStatus(modalAction, suspendRejectReason.value)">{{modalAction}}</button>     -->
+    <pf-button
+        [theme]="[modalAction === 'Approve' ? 'success' : 'danger']"
+        [loading]="isLoading"
+  
+        >
+        {{modalAction}}
+    </pf-button>
+
+    </div>
+</ng-template>
