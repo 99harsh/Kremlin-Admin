@@ -9,11 +9,11 @@ export class LoaderService {
   constructor() { }
 
   show(){
-    console.log("Show")
+    //console.log("Show")
     this.isLoading.next(true)
   }
   hide(){
-    console.log("Hide")
+   // console.log("Hide")
     this.isLoading.next(false)
   }
 }

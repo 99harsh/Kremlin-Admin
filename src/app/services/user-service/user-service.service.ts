@@ -24,5 +24,9 @@ export class UserServiceService {
     return this.http.get(environment.url+"api/v1/admin/user/"+payload)
   }
 
+  updateUserDetails = (payload:object) =>{
+    return this.http.post(environment.url+"api/v1/admin/edit_user_mobile_number", payload)
+  }
+
 
 }

@@ -3,7 +3,6 @@ import { FormGroup, FormControl, Validators, FormBuilder, Form } from '@angular/
 import { NgxQrcodeElementTypes, NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode'
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
-import * as htmlToPdfmake from "html-to-pdfmake";
 import JSZip from 'jszip';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { QrCodeService } from '@services/qr-code/qr-code.service';
@@ -16,7 +15,7 @@ import { saveAs } from 'file-saver';
   templateUrl: './generate-qr-code.component.html',
   styleUrls: ['./generate-qr-code.component.scss']
 })
-export class GenerateQrCodeComponent implements OnInit, AfterViewInit {
+export class GenerateQrCodeComponent implements OnInit {
 
   @ViewChild('pdfTable') pdfTable: ElementRef;
   qrCodeForm: FormGroup;
@@ -133,14 +132,5 @@ export class GenerateQrCodeComponent implements OnInit, AfterViewInit {
   dateFormat(date: any) {
     return format(new Date(date), "dd-MMM hh:mm a")
   }
-
-  ngAfterViewInit() {
-    console.log("Called")
-  }
-
-
-
-
-
 
 }
