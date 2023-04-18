@@ -80,12 +80,12 @@ export const MENU = [
         iconClasses: 'fas fa-list',
         children:[
         {
-            name: "Claimed Transactions",
+            name: "Scanned QR Transactions",
             iconClasses: 'fas fa-list',
             path: ['/transaction/claimed']
         },
         {
-            name: "Pending Transactions",
+            name: "Claimed Pending Transactions",
             iconClasses: 'fas fa-list',
             path: ['/transaction/pending']
         },

@@ -10,6 +10,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ActiveUsersComponent } from './active-users/active-users.component';
 import { RejectedUsersComponent } from './rejected-users/rejected-users.component'
 import { PfButton, ProfabricComponentsModule } from '@profabric/angular-components';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { PfButton, ProfabricComponentsModule } from '@profabric/angular-componen
     UsersRoutingModule,
      DataTablesModule,
      NgbModule,
-     ProfabricComponentsModule
+     ProfabricComponentsModule,
+     ReactiveFormsModule
   ]
 })
 export class UsersModule { }
