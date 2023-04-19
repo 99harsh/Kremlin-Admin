@@ -95,5 +95,42 @@ export const MENU = [
             path: ['/transaction/settled']
         }
     ]
+    },
+    {
+        name: "Configuration",
+        iconClasses: 'fas fa-wrench',
+        children:[
+            {
+                name: "Home Carousel",
+                iconClasses: 'fas fa-image',
+                path: ['/configuration/home-carousel']
+            },
+            {
+                name: 'Privacy Policy',
+                iconClasses: 'fas fa-wrench',
+                path: ['/configuration/privacy-policy']
+            },
+            {
+                name: 'Terms and Conditions',
+                iconClasses: 'fas fa-wrench',
+                path: ['/configuration/terms-and-conditions']
+            },
+        ]
+    },
+    {
+        name: "Products",
+        iconClasses: 'fas fa-image',
+        children:[
+            {
+                name: 'Add Product',
+                iconClasses: 'fas fa-image',
+                path: ['/products/add-product']
+            },
+            {
+                name: 'All Products',
+                iconClasses: 'fas fa-image',
+                path: ['/products/all-products']
+            }
+        ]
     }
 ];

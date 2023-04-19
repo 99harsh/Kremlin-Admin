@@ -29,7 +29,7 @@
                     <!-- small box -->
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>{{statisticData.ACTIVE_USERS_COUNT}}</h3>
+                            <h3>{{intToString(statisticData.ACTIVE_USERS_COUNT)}}</h3>
     
                             <p>Active Users</p>
                         </div>
@@ -46,8 +46,8 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>{{statisticData.QR_SCANNED_COUNT }}/{{statisticData.QR_COUNT}}</h3>
-                        <p>QR Generated</p>
+                        <h3>{{intToString(statisticData.QR_SCANNED_COUNT) }}/{{intToString(statisticData.QR_COUNT)}}</h3>
+                        <p>QR Codes</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-qrcode"></i>
@@ -62,9 +62,9 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>{{statisticData.AMOUNT_TO_BE_SETTLED == null ? 0 : statisticData.AMOUNT_TO_BE_SETTLED}} ₹</h3>
+                        <h3>{{statisticData.AMOUNT_TO_BE_SETTLED == null ? 0 : intToString(statisticData.AMOUNT_TO_BE_SETTLED)}} ₹</h3>
 
-                        <p>Amount to be Settle</p>
+                        <p>Amount to be Settled</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-rupee-sign"></i>
@@ -79,7 +79,7 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>{{statisticData.AMOUNT_SETTLED == null ? 0 : statisticData.AMOUNT_SETTLED}} ₹</h3>
+                        <h3>{{statisticData.AMOUNT_SETTLED == null ? 0 : intToString(statisticData.AMOUNT_SETTLED)}} ₹</h3>
 
                         <p>Amount Settled</p>
                     </div>

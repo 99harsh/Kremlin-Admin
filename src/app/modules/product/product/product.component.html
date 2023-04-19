@@ -1,0 +1,67 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Products</a></li>
+                    <li class="breadcrumb-item active">Add Product</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+        <div class="card">
+            <form [formGroup]="productForm" (ngSubmit)="addNewProduct()">
+                <div class="card-header">
+                    <h5>Add Product</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label>Product Name</label>
+                            <input type="text" formControlName="name" class="form-control">
+                            <div *ngIf="productForm.get('name').touched && productForm.get('name').invalid">
+                                <span *ngIf="productForm.get('name').hasError('required')" class="text-danger">Please Enter Product Name</span>
+                                <span *ngIf="productForm.get('name').hasError('max') || 
+                                            productForm.get('name').hasError('min')
+                                            " class="text-danger">Product Name Must Contain 3 to 50 Characters</span>
+                            </div>
+                        </div>
+                        <div class="form-group col">
+                            <label>Product Images</label>
+                            <input type="file" class="form-control" multiple>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label>Product Description</label>
+                            <angular-editor formControlName="description" [config]="editorConfig"
+                            ></angular-editor>
+                            <div *ngIf="productForm.get('description').touched && productForm.get('description').invalid">
+                                <span *ngIf="productForm.get('description').hasError('required')" class="text-danger">Please Enter Product Description</span>
+                                <span *ngIf=" 
+                                            productForm.get('description').hasError('min')
+                                            " class="text-danger">Product Name Must Contain Min 10 Characters</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->

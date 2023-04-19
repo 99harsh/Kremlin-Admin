@@ -173,51 +173,130 @@
         <h5 class="m-0">User Info</h5>
     </div>
     <div class="modal-body">
+        <div class="transaction-summary-wrapper row">
+            <div class="transaction-summary card-sm bg-primary">
+                <div class="information-wrapper">
+                    <p class="m-0">QR Scanned</p>
+                    <h5 class="m-0 font-weight-bold">{{intToString(userTransactionSummary.QR_SCANNED)}}</h5>
+                </div>
+                <div class="icon-wrapper">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+            </div>
+
+            <div class="transaction-summary card-sm bg-success">
+                <div class="information-wrapper">
+                    <p class="m-0">Points Claimed</p>
+                    <h5 class="m-0 font-weight-bold">{{intToString(userTransactionSummary.POINS_CLAIMED)}}</h5>
+                </div>
+                <div class="icon-wrapper">
+                    <i class="fas fa-coins"></i>
+                </div>
+            </div>
+            <div class="transaction-summary card-sm bg-warning">
+                <div class="information-wrapper">
+                    <p class="m-0">Points Available</p>
+                    <h5 class="m-0 font-weight-bold">{{intToString(userTransactionSummary.POINTS_AVAILABLE)}}</h5>
+                </div>
+                <div class="icon-wrapper">
+                    <i class="fas fa-coins"></i>
+                </div>
+            </div>
+
+            <div class="transaction-summary card-sm bg-info">
+                <div class="information-wrapper">
+                    <p class="m-0">Amount to be Settled</p>
+                    <h5 class="m-0 font-weight-bold">{{intToString(userTransactionSummary.AMOUNT_TO_BE_SETTLED)}} ₹</h5>
+                </div>
+                <div class="icon-wrapper">
+                    <i class="fas fa-rupee-sign"></i>
+                </div>
+            </div>
+            <div class="transaction-summary card-sm bg-danger">
+                <div class="information-wrapper">
+                    <p class="m-0">Amount Settled</p>
+                    <h5 class="m-0 font-weight-bold">{{intToString(userTransactionSummary.AMOUNT_SETTLED)}} ₹</h5>
+                </div>
+                <div class="icon-wrapper">
+                    <i class="fas fa-rupee-sign"></i>
+                </div>
+            </div>
+            
+        </div>
         <ul ngbNav #nav="ngbNav" class="nav-tabs my-2">
             <li ngbNavItem>
-              <button ngbNavLink>User Details</button>
+              <button ngbNavLink (click)="userDetailsClick()">User Details</button>
               <ng-template ngbNavContent>
                 <div class="form-row">
                     <div class="form-group col">
                         <label>Name</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" [disabled]="true" [value]="[userInfo.FIRST_NAME+' '+userInfo.LAST_NAME]" placeholder="Name">
                     </div>
                     <div class="form-group col">
                         <label>Mobile</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" [disabled]="true" [value]="[userInfo.MOBILE_NUMBER]" placeholder="Mobile Number">
                     </div>
                     <div class="form-group col">
                         <label>Date Of Birth</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" [disabled]="true" [value]="[formatDOB(userInfo.DATE_OF_BIRTH)]" placeholder="Date Of Birth">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col">
                         <label>Address</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" [disabled]="true" [value]="[userInfo.ADDRESS]" placeholder="Address">
                     </div>
                     <div class="form-group col">
                         <label>Language</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" [disabled]="true" [value]="[userInfo.LANGUAGE]" placeholder="Language">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col">
                         <label>PAN Number</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" [disabled]="true" [value]="[userInfo.PAN_NUMBER]" placeholder="PAN Number">
                     </div>
                     <div class="form-group col">
                         <label>Aadhar Number</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" [disabled]="true" [value]="[userInfo.AADHAR_NUMBER]" placeholder="Aadhar Number">
                     </div>
                 </div>
               </ng-template>
             </li>
             <li ngbNavItem>
-              <button ngbNavLink>Transaction Details</button>
-              <ng-template ngbNavContent>Second content</ng-template>
+              <button ngbNavLink (click)="userTransactionDetails(userInfo.ID)">Transaction Details</button>
+              <ng-template ngbNavContent>
+                <div class="dataTables_wrapper dt-bootstrap4">
+                    <table datatable class="table table-bordered table-hover dataTable dtr-inline">
+                        <thead>
+                          <tr>
+                            <th>SL No.</th>
+                            <th>Points Claimed</th>
+                            <th>Amount</th>
+                            <th>Payment Mode</th>
+                            <th>Status</th>
+                            <th>Transaction Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let element of userTransactions; let i = index">
+                                <td>{{i+1}}</td>
+                                <td>{{ element.POINTS }}</td>
+                                <td>{{ element.AMOUNT }} ₹</td>
+                                <td>{{ element.ACCOUNT_NUMBER != null ? 'Bank Account' : "Paytm" }}</td>
+                                <td [ngClass]="[element.STATUS === 'SETTLED' || element.STATUS === 'CLAIMED' ? 'text-success' : 'text-warning']"
+                                >{{ element.STATUS }}</td>
+                                <td>{{ formatDateTime(element.TRNX_TS) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+              </ng-template>
             </li>
           </ul>
           <div [ngbNavOutlet]="nav"></div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
     </div>
 </ng-template>

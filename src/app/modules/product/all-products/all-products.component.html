@@ -3,12 +3,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Settled Transactions</h1>
+                <h1>All Products</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Settled</a></li>
-                    <li class="breadcrumb-item active">Settled Transactions
+                    <li class="breadcrumb-item"><a href="#">Product</a></li>
+                    <li class="breadcrumb-item active">All Products</li>
                 </ol>
             </div>
         </div>
@@ -21,36 +21,35 @@
     <!-- Default box -->
     <div class="container-fluid">
         <div class="card">
+
             <div class="card-body">
                 <div class="dataTables_wrapper dt-bootstrap4">
                     <table datatable [dtTrigger]="dtTrigger" class="table table-bordered table-hover dataTable dtr-inline">
                         <thead>
                           <tr>
-                            <th>SL No.</th>
+                            <th>SL No</th>
                             <th>Name</th>
-                            <th>Points Claimed</th>
-                            <th>Amount</th>
-                            <th>Payment Mode</th>
-                            <th>Claimed Date</th>
-                            <th>Settled Date</th>
+                            <th>Short Description</th>
+                            <th>Status</th>
+                            <th>Last Updated</th>
+                            <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let element of transactionData; let i = index" class="table-row">
+                          <tr *ngFor="let element of productData;let i = index" class="table-row">
                             <td>{{i+1}}</td>
                             <td>{{element.NAME}}</td>
-                            <td>{{element.POINTS}}</td>
-                            <td>{{element.AMOUNT}}  ₹</td>
-                            <td>{{element.ACCOUNT_NUMBER == null ? 'Paytm' : 'Bank Account'}}</td>
-                            <td>{{ formatDate(element.TRNX_TS) }}</td>
-                            <td>{{ formatDate(element.SETTLE_TS) }}</td>
+                            <td>{{element.SHORT_DESCRIPTION}}</td>
+                            <td [ngClass]="[element.STATUS === 'SHOW' ? 'text-success' : 'text-danger']">{{element.STATUS}}</td>
+                            <td>{{ formatDate(element.UPDATED_AT) }}</td>
+                            <td>
+                                <button class="btn btn-warning">Edit</button>
+                            </td>
                           </tr>     
                         </tbody>
-                      </table>
-                </div> 
-                <div class="p-2" *ngIf="transactionData.length === 0">
-                    <p class="m-0 text-center">No Data Found</p>
+                      </table>                  
                 </div>
+
             </div>
             <!-- /.card-body -->
             <!-- /.card-footer-->
