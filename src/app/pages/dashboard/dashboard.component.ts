@@ -24,7 +24,10 @@ export class DashboardComponent implements OnInit{
     }
 
      intToString = (num:any) => {
-        num = num.toString().replace(/[^0-9.]/g, '');
+        if(num == "" || num == undefined || num == 0 || num == null){
+            return num;
+        }
+        num = (num.toString()).replace(/[^0-9.]/g, '');
         if (num < 1000) {
             return num;
         }

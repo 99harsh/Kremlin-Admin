@@ -33,4 +33,9 @@ export class ClaimedTransactionComponent  implements OnInit{
   formatDate = (date:any) => {
     return format(new Date(date), "dd-MMM hh:mm a");
   }
+
+  openModal = (content, element)=>{
+
+  }
+  
 }

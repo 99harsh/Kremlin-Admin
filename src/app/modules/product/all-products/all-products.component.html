@@ -43,7 +43,7 @@
                             <td [ngClass]="[element.STATUS === 'SHOW' ? 'text-success' : 'text-danger']">{{element.STATUS}}</td>
                             <td>{{ formatDate(element.UPDATED_AT) }}</td>
                             <td>
-                                <button class="btn btn-warning">Edit</button>
+                                <button class="btn btn-warning" (click)="openModal(editModal, element)">Edit</button>
                             </td>
                           </tr>     
                         </tbody>
@@ -58,3 +58,31 @@
     <!-- /.card -->
 </section>
 <!-- /.content -->
+<ng-template #editModal let-modal>
+    <form [formGroup]="productDetailsForm" (ngSubmit)="updateProduct()">
+    <div class="modal-header">
+        <h4 class="modal-title m-0" id="modal-basic-title">Edit</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Product Name</label>
+                <input type="text" formControlName="name" class="form-control" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Product Description</label>
+                <angular-editor formControlName="description" [config]="editorConfig"></angular-editor>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
+        <!-- <button [ngClass]="[modalAction ==='Approve' ? 'btn btn-success' : 'btn btn-danger']"
+        (click)="updateUserStatus(modalAction, suspendRejectReason.value)">{{modalAction}}</button>     -->
+        <button type="submit" type="submit" class="btn btn-success">Update</button>
+
+    </div>
+</form>
+</ng-template>

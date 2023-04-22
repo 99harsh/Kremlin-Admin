@@ -3,12 +3,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Scanned QR Transactions</h1>
+                <h1>Rejected Transactions</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Transactions</a></li>
-                    <li class="breadcrumb-item active">Scanned QR Transactions
+                    <li class="breadcrumb-item active">Rejected Transactions
                 </ol>
             </div>
         </div>
@@ -28,26 +28,31 @@
                           <tr>
                             <th>SL No.</th>
                             <th>Name</th>
+                            <th>Mobile</th>
                             <th>Points Claimed</th>
-                            <th>Date</th>
-     
+                            <th>Amount</th>
+                            <th>Payment Mode</th>
+                            <th>Claimed Date</th>
+                            <th>Rejected Date</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr *ngFor="let element of transactionData; let i = index" class="table-row">
                             <td>{{i+1}}</td>
                             <td>{{element.NAME}}</td>
-                            <td>{{ element.POINTS }}</td>
+                            <td>{{element.MOBILE_NUMBER}}</td>
+                            <td>{{element.POINTS}}</td>
+                            <td>{{element.AMOUNT}}  ₹</td>
+                            <td>{{element.ACCOUNT_NUMBER == null ? 'Paytm' : 'Bank Account'}}</td>
                             <td>{{ formatDate(element.TRNX_TS) }}</td>
-                 
+                            <td>{{ formatDate(element.SETTLE_TS) }}</td>
                           </tr>     
                         </tbody>
                       </table>
-
-                      <div class="p-2" *ngIf="transactionData.length === 0">
-                            <p class="m-0 text-center">No Data Found</p>
-                      </div>
                 </div> 
+                <div class="p-2" *ngIf="transactionData.length === 0">
+                    <p class="m-0 text-center">No Data Found</p>
+                </div>
             </div>
             <!-- /.card-body -->
             <!-- /.card-footer-->

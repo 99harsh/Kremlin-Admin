@@ -93,6 +93,11 @@ export const MENU = [
             name: "Settled Transactions",
             iconClasses: 'fas fa-list',
             path: ['/transaction/settled']
+        },
+        {
+            name: "Rejected Transactions",
+            iconClasses: 'fas fa-list',
+            path: ['/transaction/rejected']
         }
     ]
     },

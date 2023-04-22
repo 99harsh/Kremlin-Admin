@@ -16,4 +16,13 @@ export class ProductService {
     return this.http.get(`${environment.url}api/v1/products`)
   }
 
+
+  getProductDetails = (product_id: any) =>{
+    return this.http.get(`${environment.url}api/v1/product/${product_id}`);
+  }
+
+  updateProductDescription = (payload:object, item_id:any) =>{
+    return this.http.post(`${environment.url}api/v1/admin/edit_product/${item_id}`, payload)
+  }
+
 }
