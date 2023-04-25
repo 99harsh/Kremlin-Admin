@@ -13,16 +13,19 @@ export class ProductService {
   }
 
   getAllProducts = () =>{
-    return this.http.get(`${environment.url}api/v1/products`)
+    return this.http.get(`${environment.url}api/v1/admin/products/all`)
   }
 
 
   getProductDetails = (product_id: any) =>{
-    return this.http.get(`${environment.url}api/v1/product/${product_id}`);
+    return this.http.get(`${environment.url}api/v1/admin/product/${product_id}`);
   }
 
   updateProductDescription = (payload:object, item_id:any) =>{
     return this.http.post(`${environment.url}api/v1/admin/edit_product/${item_id}`, payload)
   }
 
+  updateProductImages = (item_id:any, file_object:any) =>{
+    return this.http.post(`${environment.url}api/v1/admin/upload_product_image/${item_id}`, file_object)
+  } 
 }

@@ -69,12 +69,38 @@ export class ProductComponent implements OnInit{
     
   }
 
+  images:any = [];
+  imagesPayload:any = new FormData();
+  selectFile = (event:any) =>{
+    this.images = [];
+    const files = event.target.files;
+    this.imagesPayload = new FormData();
+    for(let file of files){
+        this.images.push(file)
+        this.imagesPayload.append("image", file);
+    }
+
+
+    console.log(this.images);
+
+  }
+
   addNewProduct = () =>{
-    if(this.productForm.valid){
+    if(this.productForm.valid && this.images.length > 0){
+      console.log(this.productForm.value)
         this.productService.addNewProduct(this.productForm.value).subscribe((res:any)=>{
           if(res.status === 200){
-            this.toastr.success("Product Added Successfully!");
-            this.productForm.reset();
+            const product_id = res.product_id;
+
+            this.productService.updateProductImages(product_id, this.imagesPayload).subscribe((resp:any)=>{
+              if(resp.status === 200){
+                this.images = [];
+                this.imagesPayload = new FormData();
+                this.toastr.success("Product Added Successfully!");
+                this.productForm.reset();
+              }
+            })
+   
           }else{
             this.toastr.error("Something Went Wrong!");
           }

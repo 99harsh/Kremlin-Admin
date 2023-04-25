@@ -28,26 +28,31 @@
                         <thead>
                           <tr>
                             <th>SL No</th>
+                            <th>Thumbnail</th>
                             <th>Name</th>
                             <th>Short Description</th>
                             <th>Status</th>
-                            <th>Last Updated</th>
                             <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr *ngFor="let element of productData;let i = index" class="table-row">
                             <td>{{i+1}}</td>
+                            <td>
+                                <div style="width:200px; height:200px">
+                                    <img [src]="URL+element.IMAGE_URL" style="width:100%; height:100%; object-fit:contain"/>
+                                </div>
+                            </td>
                             <td>{{element.NAME}}</td>
                             <td>{{element.SHORT_DESCRIPTION}}</td>
-                            <td [ngClass]="[element.STATUS === 'SHOW' ? 'text-success' : 'text-danger']">{{element.STATUS}}</td>
-                            <td>{{ formatDate(element.UPDATED_AT) }}</td>
+                            <td [ngClass]="[element.STATUS === 'AVAILABLE' ? 'text-success' : 'text-danger']">{{element.STATUS}}</td>
                             <td>
                                 <button class="btn btn-warning" (click)="openModal(editModal, element)">Edit</button>
                             </td>
                           </tr>     
                         </tbody>
-                      </table>                  
+                      </table>  
+                     
                 </div>
 
             </div>
@@ -77,6 +82,28 @@
             </div>
         </div>
     </div>
+    <div class="table">
+        <table class="table table-hover">
+            <thead> 
+                <th>#</th>
+                <th>Image</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let images of productDetails.IMAGES; let i = index">
+                    <td>{{i+1}}</td>
+                    <td>
+                       <div style="width:200px; height:200px">
+                            <img [src]="URL+images.image_path" style="width:100%; height:100%; object-fit:contain"/>
+                        </div> 
+                    </td>
+                    <td>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+      </div>     
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
         <!-- <button [ngClass]="[modalAction ==='Approve' ? 'btn btn-success' : 'btn btn-danger']"

@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'environments/environment';
 @Component({
   selector: 'app-all-products',
   templateUrl: './all-products.component.html',
@@ -13,6 +14,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 })
 export class AllProductsComponent implements OnInit{
 
+  URL:any = environment.url;
   dtTrigger:Subject<any> = new Subject<any>();
   productData:any = [];
   productDetails:any = {};
@@ -76,7 +78,9 @@ export class AllProductsComponent implements OnInit{
   initData = () =>{
     this.dtTrigger = new Subject<any>();
     this.productService.getAllProducts().subscribe((res:any)=>{
+      console.log("RES", res)
       if(res.status == 200){
+        console.log(res.data);
         this.productData = res.data;
         this.dtTrigger.next(res.data);
       }else{
@@ -86,18 +90,20 @@ export class AllProductsComponent implements OnInit{
   }
 
   formatDate = (date:any) =>{
+    if(date === "" || date === undefined || date === null){return ""}
     return format(new Date(date), 'dd-MMM-yyyy hh:mm a');
   }
 
   openModal = (content:any, element:any) =>{
     this.productDetails = element;
-    this.productService.getProductDetails(element.ID).subscribe((res:any)=>{
+    this.productService.getProductDetails(element.PRODUCT_ID).subscribe((res:any)=>{
       if(res.status === 200){
-        const product = res.product;
+        const product = res.data;
         this.productDetailsForm.setValue({
           name: product.NAME,
           description: product.DESCRIPTION
         })
+        this.productDetails = res.data;
       }else{
         this.toastr.error("Something Went Wrong! Backend Error");
         this.modalSerivce.dismissAll();
