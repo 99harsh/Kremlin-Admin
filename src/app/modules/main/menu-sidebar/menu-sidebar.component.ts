@@ -93,7 +93,64 @@ export const MENU = [
             name: "Settled Transactions",
             iconClasses: 'fas fa-list',
             path: ['/transaction/settled']
+        },
+        {
+            name: "Rejected Transactions",
+            iconClasses: 'fas fa-list',
+            path: ['/transaction/rejected']
         }
     ]
+    },
+    {
+        name: "Configuration",
+        iconClasses: 'fas fa-wrench',
+        children:[
+            {
+                name: "Home Carousel",
+                iconClasses: 'fas fa-image',
+                path: ['/configuration/home-carousel']
+            },
+            {
+                name: "Utils Variables",
+                iconClasses: 'fas fa-wrench',
+                path: ['/configuration/utils']
+            },
+            {
+                name: 'Privacy Policy',
+                iconClasses: 'fas fa-wrench',
+                path: ['/configuration/privacy-policy']
+            },
+            {
+                name: 'Terms and Conditions',
+                iconClasses: 'fas fa-wrench',
+                path: ['/configuration/terms-and-conditions']
+            },
+            {
+                name: "FAQ's",
+                iconClasses: 'fas fa-question',
+                path:['/configuration/faq']
+            },
+            {
+                name: "Help",
+                iconClasses: 'fas fa-wrench',
+                path: ['/configuration/help']
+            }
+        ]
+    },
+    {
+        name: "Products",
+        iconClasses: 'fas fa-image',
+        children:[
+            {
+                name: 'Add Product',
+                iconClasses: 'fas fa-image',
+                path: ['/products/add-product']
+            },
+            {
+                name: 'All Products',
+                iconClasses: 'fas fa-image',
+                path: ['/products/all-products']
+            }
+        ]
     }
 ];

@@ -1,0 +1,149 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>All Products</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Product</a></li>
+                    <li class="breadcrumb-item active">All Products</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+        <div class="card">
+
+            <div class="card-body">
+                <div class="dataTables_wrapper dt-bootstrap4">
+                    <table datatable [dtTrigger]="dtTrigger" class="table table-bordered table-hover dataTable dtr-inline">
+                        <thead>
+                          <tr>
+                            <th>SL No</th>
+                            <th>Thumbnail</th>
+                            <th>Name</th>
+                            <th>Short Description</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let element of productData;let i = index" class="table-row">
+                            <td>{{i+1}}</td>
+                            <td>
+                                <div style="width:100px; height:100px">
+                                    <img [src]="URL+element.IMAGE_URL" style="width:100%; height:100%; object-fit:contain"/>
+                                </div>
+                            </td>
+                            <td>{{element.NAME}}</td>
+                            <td>{{element.SHORT_DESCRIPTION}}</td>
+                            <td [ngClass]="[element.STATUS === 'AVAILABLE' ? 'text-success' : 'text-danger']">{{element.STATUS}}</td>
+                            <td>
+                                <button class="btn btn-warning mr-2" (click)="openModal(editModal, element)">Edit</button>
+                                <button class="btn btn-danger" (click)="openModal(deleteModal, element)">Delete</button>
+                            </td>
+                          </tr>     
+                        </tbody>
+                      </table>  
+                     
+                </div>
+
+            </div>
+            <!-- /.card-body -->
+            <!-- /.card-footer-->
+        </div>
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->
+
+<ng-template #deleteModal let-modal>
+    <div class="modal-header">
+        <h5>Are you sure you want to delete?</h5>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label>Name</label>
+            <input class="form-control" type="text" [value]="[productDetails.NAME]" disabled/>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="6" type="text" [innerHTML]="[productDetails.DESCRIPTION]" disabled></textarea>
+        </div>
+        <div class="form-group">
+            <label>Thumbnail Image</label>
+            <div style="width:200px; height:200px">
+                <img [src]="URL+productDetails.IMAGES[0].image_path" style="width:100%; height:100%; object-fit:contain"/>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+        <button class="btn btn-danger" (click)="deleteProduct()">Delete</button>
+    </div>
+</ng-template>
+
+<ng-template #editModal let-modal>
+    <form [formGroup]="productDetailsForm" (ngSubmit)="updateProduct()">
+    <div class="modal-header">
+        <h4 class="modal-title m-0" id="modal-basic-title">Edit</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Product Name</label>
+                <input type="text" formControlName="name" class="form-control" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Product Description</label>
+                <angular-editor formControlName="description" [config]="editorConfig"></angular-editor>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Product Images</label>
+                <input type="file" (change)="selectImage($event)" multiple class="form-control">
+            </div>  
+        </div>
+    </div>
+    <div class="table">
+        <table class="table table-hover">
+            <thead> 
+                <th>#</th>
+                <th>Image</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let images of productDetails.IMAGES; let i = index">
+                    <td>{{i+1}}</td>
+                    <td>
+                       <div style="width:100px; height:100px">
+                            <img [src]="URL+images.image_path" style="width:100%; height:100%; object-fit:contain"/>
+                        </div> 
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" (click)="deleteProductImage(images)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+      </div>     
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
+        <!-- <button [ngClass]="[modalAction ==='Approve' ? 'btn btn-success' : 'btn btn-danger']"
+        (click)="updateUserStatus(modalAction, suspendRejectReason.value)">{{modalAction}}</button>     -->
+        <button type="submit" type="submit" class="btn btn-success">Update</button>
+
+    </div>
+</form>
+</ng-template>

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserServiceService } from '@services/user-service/user-service.service';
 import { from, Subject } from 'rxjs';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { format } from 'date-fns';
 import { FormGroup, FormControl, Validators, FormBuilder, Form } from '@angular/forms'
+import { DataTableDirective } from 'angular-datatables';
 @Component({
   selector: 'app-all-users',
   templateUrl: './all-users.component.html',
@@ -13,6 +14,7 @@ import { FormGroup, FormControl, Validators, FormBuilder, Form } from '@angular/
 export class AllUsersComponent implements OnInit {
 
   editForm:FormGroup;
+  dtElement: any;
   constructor(private userService: UserServiceService,
     private config: NgbModalConfig,
     private modalService: NgbModal,
@@ -21,6 +23,7 @@ export class AllUsersComponent implements OnInit {
      this.editForm = formBuilder.group({
       mobile: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')])
     })
+
     config.centered = true;
     config.animation = true
     config.backdrop = 'static'
@@ -30,10 +33,13 @@ export class AllUsersComponent implements OnInit {
 
   users: any = [];
   dtTrigger: Subject<any> = new Subject<any>();
+  dtTragger2: Subject<any> = new Subject();
   selectedData: any = {};
   modalAction: string = "";
   isLoading: boolean = false;
   userInfo:any = {};
+  userTransactionSummary:any = [];
+  userTransactions:any = [];
 
   ngOnInit(): void {
     this.initData();
@@ -41,6 +47,7 @@ export class AllUsersComponent implements OnInit {
 
   initData() {
     this.dtTrigger = new Subject<any>();
+    
     this.userService.getAllUsers('all').subscribe((res: any) => {
       if (res.status == 200) {
         this.users = res.data;
@@ -62,7 +69,7 @@ export class AllUsersComponent implements OnInit {
     const payload = {
       user_id: this.selectedData.ID,
       action: action === 'Approve' ? "APPROVED" : action === "Reject" ? "REJECTED" : "SUSPENDED",
-      comment: reason
+      remarks: reason
     }
     this.userService.updateUserStatus(payload).subscribe((res:any)=>{
       if(res.status === 200){
@@ -100,13 +107,28 @@ export class AllUsersComponent implements OnInit {
     console.log("COntent", content)
     this.userService.getUserDetails(element.ID).subscribe((res:any)=>{
       if(res.status === 200){
-        this.modalService.open(content, {size:'xl'})
+        this.userService.userTransactionSummary(element.ID).subscribe((res_transaction:any)=>{
+          if(res_transaction.status === 200){
+            this.userInfo = res.data;
+            this.userTransactionSummary = res_transaction.data[0];
+            this.modalService.open(content, {size:'xl'})
+          }else{
+            this.toastr.error("Something Went Wrong! Backend Error");
+          }
+        })
+       
+      }else{
+        this.toastr.error("Something Went Wrong! Backend Error");
       }
     })
   }
 
   formatDOB = (date:any) =>{
     return format(new Date(date), 'dd-MMM-yyyy')
+  }
+
+  formatDateTime = (date:any) => {
+    return format(new Date(date), 'dd-MMM-yyyy hh:mm a')
   }
 
   editFormOnSubmit = () => {
@@ -131,5 +153,62 @@ export class AllUsersComponent implements OnInit {
         })
       }
   }
+
+  userTransactionDetails = (id:any) =>{
+
+      this.dtTragger2  = new Subject<any>();
+      this.userService.userTransactionDetails(id).subscribe((res:any)=>{
+        if(res.status === 200){
+          this.userTransactions = res.data;
+          setTimeout(()=>this.dtTragger2.next(res.data));
+        }else{
+          this.toastr.error("Something Went Wrong! Backend Error");
+        }
+      })
+
+   
+  }
+
+  userDetailsClick = () =>{
+   // this.dtTragger2.unsubscribe();
+  }
+  closeModal = () =>{
+    this.modalService.dismissAll();
+  }
+
+  ngAfterViewInit(): void {
+    this.dtTragger2.next('');
+}
+
+rerender(): void {
+  this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+     dtInstance.destroy();
+     this.dtTragger2.next([]);     
+  });
+}
+
+intToString = (num:any) => {
+  num = num.toString().replace(/[^0-9.]/g, '');
+  if (num < 1000) {
+      return num;
+  }
+  let si = [
+    {v: 1E3, s: "K"},
+    {v: 1E6, s: "M"},
+    {v: 1E9, s: "B"},
+    {v: 1E12, s: "T"},
+    {v: 1E15, s: "P"},
+    {v: 1E18, s: "E"}
+    ];
+  let index;
+  for (index = si.length - 1; index > 0; index--) {
+      if (num >= si[index].v) {
+          break;
+      }
+  }
+  return (num / si[index].v).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + si[index].s;
+};
+
+
 
 }

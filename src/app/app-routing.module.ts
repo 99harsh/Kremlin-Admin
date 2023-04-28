@@ -42,6 +42,14 @@ const routes: Routes = [
         path: 'transaction',
         loadChildren: ()=> import('./modules/transaction/transaction.module').then(m=>m.TransactionModule)
     },
+    {
+        path: 'configuration',
+        loadChildren: () => import('./modules/configuration/configuration.module').then(m=>m.ConfigurationModule)
+    },
+    {
+        path: 'products',
+        loadChildren: () => import('./modules/product/product.module').then(m=>m.ProductModule)
+    },
     {path: '**', redirectTo: ''}
 ];
 

@@ -34,6 +34,7 @@ import {SidebarSearchComponent} from './components/sidebar-search/sidebar-search
 import { LoadingComponent } from './pages/loading/loading.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 
+
 defineCustomElements();
 registerLocaleData(localeEn, 'en-EN');
 
@@ -56,7 +57,8 @@ registerLocaleData(localeEn, 'en-EN');
         MenuItemComponent,
         ControlSidebarComponent,
         SidebarSearchComponent,
-        LoadingComponent
+        LoadingComponent,
+
     ],
     imports: [
         BrowserModule,

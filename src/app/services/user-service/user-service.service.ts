@@ -28,5 +28,14 @@ export class UserServiceService {
     return this.http.post(environment.url+"api/v1/admin/edit_user_mobile_number", payload)
   }
 
+  userTransactionSummary = (payload:string) => {
+    return this.http.get(environment.url+"api/v1/admin/transaction_summary/"+payload);
+  } 
+
+  userTransactionDetails = (payload:string) =>{
+    return this.http.get(environment.url+"api/v1/admin/transactions/"+payload);
+  }
+
+
 
 }

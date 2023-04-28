@@ -7,19 +7,25 @@ import { PendingTransactionComponent } from './pending-transaction/pending-trans
 import { SettledTransactionComponent } from './settled-transaction/settled-transaction.component';
 import { ProfabricComponentsModule } from '@profabric/angular-components';
 import { DataTablesModule } from 'angular-datatables';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RejectedTransactionComponent } from './rejected-transaction/rejected-transaction.component';
 
 
 @NgModule({
   declarations: [
     ClaimedTransactionComponent,
     PendingTransactionComponent,
-    SettledTransactionComponent
+    SettledTransactionComponent,
+    RejectedTransactionComponent
   ],
   imports: [
     CommonModule,
     TransactionRoutingModule,
     ProfabricComponentsModule,
-    DataTablesModule
+    DataTablesModule,
+    NgxQRCodeModule,
+    ReactiveFormsModule
   ]
 })
 export class TransactionModule { }

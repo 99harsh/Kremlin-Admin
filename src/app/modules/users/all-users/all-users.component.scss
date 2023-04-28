@@ -5,3 +5,25 @@
 .btn{
     width: 90px;
 }
+
+.transaction-summary-wrapper{
+    justify-content: space-evenly;
+}
+
+.transaction-summary{
+    display: flex;
+    margin:10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.information-wrapper,
+.icon-wrapper{
+    padding:0px 10px
+}
+
+.icon-wrapper i{
+    font-size: 40px;
+}

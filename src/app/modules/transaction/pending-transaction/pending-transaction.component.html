@@ -23,29 +23,37 @@
         <div class="card">
             <div class="card-body">
                 <div class="dataTables_wrapper dt-bootstrap4">
-                    <table datatable [dtTrigger]="dtTrigger" class="table table-bordered table-hover dataTable dtr-inline">
+                    <table datatable [dtTrigger]="dtTrigger"
+                        class="table table-bordered table-hover dataTable dtr-inline">
                         <thead>
-                          <tr>
-                            <th>SL No.</th>
-                            <th>Name</th>
-                            <th>Points Claimed</th>
-                            <th>Amount</th>
-                            <th>Payment Mode</th>
-                            <th>Date</th>
-                          </tr>
+                            <tr>
+                                <th>SL No.</th>
+                                <th>Name</th>
+                                <th>Mobile Number</th>
+                                <th>Points Claimed</th>
+                                <th>Amount</th>
+                                <th>Payment Mode</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let element of transactionData; let i = index" class="table-row">
-                            <td>{{i+1}}</td>
-                            <td>{{element.NAME}}</td>
-                            <td>{{element.POINTS}}</td>
-                            <td>{{element.AMOUNT}} ₹</td>
-                            <td>{{element.ACCOUNT_NUMBER == null ? 'Paytm' : "Bank Account"}}</td>
-                            <td>{{ formatDate(element.TRNX_TS)}}</td>
-                          </tr>     
+                            <tr *ngFor="let element of transactionData; let i = index" class="table-row">
+                                <td>{{i+1}}</td>
+                                <td>{{element.NAME}}</td>
+                                <td>{{ element.MOBILE_NUMBER }}</td>
+                                <td>{{element.POINTS}}</td>
+                                <td>{{element.AMOUNT}} ₹</td>
+                                <td>{{element.ACCOUNT_NUMBER == null ? 'Paytm' : "Bank Account"}}</td>
+                                <td>{{ formatDate(element.TRNX_TS)}}</td>
+                                <td><button class="btn btn-success"
+                                        (click)="openModal(approveModal, element)">Approve</button>
+                                    <button class="btn btn-danger ml-2" (click)="openModal(rejectModal, element)">Reject</button>
+                                    </td>
+                            </tr>
                         </tbody>
-                      </table>
-                </div> 
+                    </table>
+                </div>
                 <div class="p-2" *ngIf="transactionData.length === 0">
                     <p class="m-0 text-center">No Data Found</p>
                 </div>
@@ -57,3 +65,168 @@
     <!-- /.card -->
 </section>
 <!-- /.content -->
+<ng-template #rejectModal let-modal>
+    <form [formGroup]="approveForm" (ngSubmit)="paymentAction('rejected', selectedUser.REDEEM_TRNX_ID)">
+        <div class="modal-header">
+            <h5 class="modal-title m-0">Reject Payment</h5>
+        </div>
+
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label>Name</label>
+                        <input type="text" class="form-control" [value]="[selectedUser.NAME]" [disabled]="true" />
+                    </div>
+                    <div class="form-group col">
+                        <label>Mobile Number</label>
+                        <input type="text" class="form-control" [value]="[selectedUser.MOBILE_NUMBER]" [disabled]="true" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label>Amount</label>
+                        <input type="text" class="form-control" [value]="[selectedUser.AMOUNT]" [disabled]="true" />
+                    </div>
+                    <div class="form-group col">
+                        <label>Payment Mode</label>
+                        <input type="text" class="form-control"
+                            [value]="[selectedUser.ACCOUNT_NUMBER == null ? 'Paytm' : 'Bank Account']" [disabled]="true" />
+                    </div>
+                </div>
+                <div *ngIf="selectedUser.ACCOUNT_NUMBER == null">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label>Paytm Number</label>
+                            <input type="text" class="form-control" [value]="[selectedUser.MOBILE_NUMBER]"
+                                [disabled]="true" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-row col">
+                            <div class="col-md-12">
+                                <label class="mt-2">Remark</label>
+                                <input type="text" class="form-control" formControlName="remark" placeholder="Enter remark (optional)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="form-row" *ngIf="selectedUser.ACCOUNT_NUMBER != null">
+                    <div class="form-group col">
+                        <label>Account Number</label>
+                        <input type="text" class="form-control" [value]="[selectedUser.ACCOUNT_NUMBER]" [disabled]="true" />
+                    </div>
+                    <div class="form-group col">
+                        <label>IFSC Code</label>
+                        <input type="text" class="form-control" [value]="[selectedUser.IFSC_CODE]" [disabled]="true" />
+                    </div>
+                </div>
+                <div class="form-row" *ngIf="selectedUser.ACCOUNT_NUMBER != null">
+                    <div class="form-group col">
+                        <label>Remark</label>
+                        <input type="text" class="form-control" formControlName="remark" placeholder="Enter remark" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+                <button class="btn btn-danger" type="submit">Reject</button>
+            </div>
+    </form>
+</ng-template>
+<ng-template #approveModal let-modal>
+    <form [formGroup]="approveForm" (ngSubmit)="paymentAction('settled',selectedUser.REDEEM_TRNX_ID
+    )">
+        <div class="modal-header">
+            <h5 class="modal-title m-0">Approve Payment</h5>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Name</label>
+                    <input type="text" class="form-control" [value]="[selectedUser.NAME]" [disabled]="true" />
+                </div>
+                <div class="form-group col">
+                    <label>Mobile Number</label>
+                    <input type="text" class="form-control" [value]="[selectedUser.MOBILE_NUMBER]" [disabled]="true" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Amount</label>
+                    <input type="text" class="form-control" [value]="[selectedUser.AMOUNT]" [disabled]="true" />
+                </div>
+                <div class="form-group col">
+                    <label>Payment Mode</label>
+                    <input type="text" class="form-control"
+                        [value]="[selectedUser.ACCOUNT_NUMBER == null ? 'Paytm' : 'Bank Account']" [disabled]="true" />
+                </div>
+            </div>
+            <div *ngIf="selectedUser.ACCOUNT_NUMBER == null">
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label>Paytm Number</label>
+                        <input type="text" class="form-control" [value]="[selectedUser.MOBILE_NUMBER]"
+                            [disabled]="true" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-row col qr-row">
+                        <label>QR Code</label>
+                        <ngx-qrcode style="text-align:center" [elementType]="elementType"
+                            [errorCorrectionLevel]="connectionLevel" [value]="qrCode"
+                            cssClass="coolQRCode"></ngx-qrcode>
+                        <p class="m-0 font-weight-bold text-center">Scan to pay</p>
+                    </div>
+                    <div class="form-row col">
+                        <div class="col-md-12">
+                            <label>Transaction ID</label>
+                            <input type="text" class="form-control" formControlName="transaction_id" placeholder="Enter transaction id" />
+                            <div *ngIf="approveForm.get('transaction_id').touched && approveForm.get('transaction_id').invalid">
+                                <span *ngIf="approveForm.get('transaction_id').hasError('required')" class="text-danger">Please Enter Transaction ID</span>
+                            </div>
+                            <label class="mt-2">Remark</label>
+                            <input type="text" formControlName="remarks" class="form-control" placeholder="Enter Remark">
+                            <div *ngIf="approveForm.get('remarks').touched && approveForm.get('remarks').invalid">
+                                <span *ngIf="approveForm.get('remarks').hasError('required')" class="text-danger">Please Enter Remark</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row" *ngIf="selectedUser.ACCOUNT_NUMBER != null">
+                <div class="form-group col">
+                    <label>Account Number</label>
+                    <input type="text" class="form-control" [value]="[selectedUser.ACCOUNT_NUMBER]" [disabled]="true" />
+                </div>
+                <div class="form-group col">
+                    <label>IFSC Code</label>
+                    <input type="text" class="form-control" [value]="[selectedUser.IFSC_CODE]" [disabled]="true" />
+                </div>
+          
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Transaction ID</label>
+                    <input type="text"class="form-control" formControlName="transaction_id" placeholder="Enter Transaction ID">
+                    <div *ngIf="approveForm.get('transaction_id').touched && approveForm.get('transaction_id').invalid">
+                        <span *ngIf="approveForm.get('transaction_id').hasError('required')" class="text-danger">Please Enter Transaction ID</span>
+                    </div>
+                </div>
+                <div class="form-group col">
+                    <label>Remark</label>
+                    <input type="text" formControlName="remarks" class="form-control" placeholder="Enter Remark">
+                    <div *ngIf="approveForm.get('remarks').touched && approveForm.get('remarks').invalid">
+                        <span *ngIf="approveForm.get('remarks').hasError('required')" class="text-danger">Please Enter Remark</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+            <button class="btn btn-success" type="submit">Approve</button>
+        </div>
+    </form>
+</ng-template>
