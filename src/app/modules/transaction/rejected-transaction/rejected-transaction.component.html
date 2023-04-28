@@ -32,6 +32,7 @@
                             <th>Points Claimed</th>
                             <th>Amount</th>
                             <th>Payment Mode</th>
+                            <th>Remark</th>
                             <th>Claimed Date</th>
                             <th>Rejected Date</th>
                           </tr>
@@ -44,6 +45,7 @@
                             <td>{{element.POINTS}}</td>
                             <td>{{element.AMOUNT}}  ₹</td>
                             <td>{{element.ACCOUNT_NUMBER == null ? 'Paytm' : 'Bank Account'}}</td>
+                            <td>{{element.REMARKS}}</td>
                             <td>{{ formatDate(element.TRNX_TS) }}</td>
                             <td>{{ formatDate(element.SETTLE_TS) }}</td>
                           </tr>     

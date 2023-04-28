@@ -39,7 +39,7 @@
                           <tr *ngFor="let element of productData;let i = index" class="table-row">
                             <td>{{i+1}}</td>
                             <td>
-                                <div style="width:200px; height:200px">
+                                <div style="width:100px; height:100px">
                                     <img [src]="URL+element.IMAGE_URL" style="width:100%; height:100%; object-fit:contain"/>
                                 </div>
                             </td>
@@ -47,7 +47,8 @@
                             <td>{{element.SHORT_DESCRIPTION}}</td>
                             <td [ngClass]="[element.STATUS === 'AVAILABLE' ? 'text-success' : 'text-danger']">{{element.STATUS}}</td>
                             <td>
-                                <button class="btn btn-warning" (click)="openModal(editModal, element)">Edit</button>
+                                <button class="btn btn-warning mr-2" (click)="openModal(editModal, element)">Edit</button>
+                                <button class="btn btn-danger" (click)="openModal(deleteModal, element)">Delete</button>
                             </td>
                           </tr>     
                         </tbody>
@@ -63,6 +64,33 @@
     <!-- /.card -->
 </section>
 <!-- /.content -->
+
+<ng-template #deleteModal let-modal>
+    <div class="modal-header">
+        <h5>Are you sure you want to delete?</h5>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label>Name</label>
+            <input class="form-control" type="text" [value]="[productDetails.NAME]" disabled/>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="6" type="text" [innerHTML]="[productDetails.DESCRIPTION]" disabled></textarea>
+        </div>
+        <div class="form-group">
+            <label>Thumbnail Image</label>
+            <div style="width:200px; height:200px">
+                <img [src]="URL+productDetails.IMAGES[0].image_path" style="width:100%; height:100%; object-fit:contain"/>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+        <button class="btn btn-danger" (click)="deleteProduct()">Delete</button>
+    </div>
+</ng-template>
+
 <ng-template #editModal let-modal>
     <form [formGroup]="productDetailsForm" (ngSubmit)="updateProduct()">
     <div class="modal-header">
@@ -81,6 +109,12 @@
                 <angular-editor formControlName="description" [config]="editorConfig"></angular-editor>
             </div>
         </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label>Product Images</label>
+                <input type="file" (change)="selectImage($event)" multiple class="form-control">
+            </div>  
+        </div>
     </div>
     <div class="table">
         <table class="table table-hover">
@@ -93,12 +127,12 @@
                 <tr *ngFor="let images of productDetails.IMAGES; let i = index">
                     <td>{{i+1}}</td>
                     <td>
-                       <div style="width:200px; height:200px">
+                       <div style="width:100px; height:100px">
                             <img [src]="URL+images.image_path" style="width:100%; height:100%; object-fit:contain"/>
                         </div> 
                     </td>
                     <td>
-                        <button class="btn btn-danger">Delete</button>
+                        <button class="btn btn-danger" (click)="deleteProductImage(images)">Delete</button>
                     </td>
                 </tr>
             </tbody>

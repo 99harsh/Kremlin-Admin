@@ -64,6 +64,9 @@ export class AllProductsComponent implements OnInit{
       ['fontSize']
     ]
   };
+
+  imageArray:any = [];
+  imageForm:any = new FormData();
   constructor(private productService: ProductService, private toastr: ToastrService, private modalSerivce: NgbModal,
               private formBuilder: FormBuilder){
                 this.productDetailsForm = this.formBuilder.group({
@@ -96,6 +99,7 @@ export class AllProductsComponent implements OnInit{
 
   openModal = (content:any, element:any) =>{
     this.productDetails = element;
+
     this.productService.getProductDetails(element.PRODUCT_ID).subscribe((res:any)=>{
       if(res.status === 200){
         const product = res.data;
@@ -104,6 +108,7 @@ export class AllProductsComponent implements OnInit{
           description: product.DESCRIPTION
         })
         this.productDetails = res.data;
+        console.log("Product Description", this.productDetails)
       }else{
         this.toastr.error("Something Went Wrong! Backend Error");
         this.modalSerivce.dismissAll();
@@ -114,10 +119,50 @@ export class AllProductsComponent implements OnInit{
     this.modalSerivce.open(content, {size:'xl'});
   }
 
+  selectImage = (event:any) =>{
+    const images = event.target.files;
+    this.imageArray = [];
+    this.imageForm = new FormData();
+    if(images.length > 0){
+      for(let image of images){
+        console.log("images", image)
+        this.imageForm.append("image", image);
+        this.imageArray.push(image);
+      }
+    
+    }
+  }
+
   updateProduct = () => {
-    const tid = this.productDetails.ID
+    const tid = this.productDetails.PRODUCT_ID
+    console.log(this.imageArray.length)
+    if(this.productDetails.NAME != this.productDetailsForm.value.name || this.productDetails.DESCRIPTION != this.productDetailsForm.value.description){
     this.productService.updateProductDescription(this.productDetailsForm.value, tid).subscribe((res:any)=>{
       if(res.status === 200){
+        if(this.imageArray.length>0){
+          this.updateProductImages();
+        }else{
+          this.initData();
+          this.toastr.success("Product Updated Successfully!");
+          this.modalSerivce.dismissAll()
+        }
+      }else{
+        this.toastr.error("Something Went Wrong! Backend Error")
+        this.modalSerivce.dismissAll()
+      }
+    })
+    }
+    else if(this.imageArray.length > 0){
+      this.updateProductImages();
+    }
+
+
+  }
+
+  updateProductImages = () =>{
+    const tid = this.productDetails.PRODUCT_ID
+    this.productService.updateProductImages(tid, this.imageForm).subscribe((res:any)=>{
+      if(res.status == 200){
         this.initData();
         this.toastr.success("Product Updated Successfully!");
         this.modalSerivce.dismissAll()
@@ -127,4 +172,30 @@ export class AllProductsComponent implements OnInit{
       }
     })
   }
+
+  deleteProductImage = (element:any) =>{
+      this.productService.deleteProductImage(element.image_id).subscribe((res:any)=>{
+      
+        if(res.status == 200){
+          this.toastr.success("Image Deleted Successfully!")
+          this.modalSerivce.dismissAll();
+        }else{
+          this.toastr.error("Something Went Wrong! Backend Error!");
+        }
+      })
+  }
+
+  deleteProduct = () =>{
+    this.productService.deleteProduct(this.productDetails.PRODUCT_ID).subscribe((res:any)=>{
+      if(res.status == 200){
+        this.toastr.success("Product Deleted Successfully!");
+        this.initData();
+        this.modalSerivce.dismissAll();
+      }else{
+        this.modalSerivce.dismissAll();
+        this.toastr.error("Something Went Wrong! Backend Error")
+      }
+    })
+  }
+
 }

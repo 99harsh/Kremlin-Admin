@@ -111,6 +111,11 @@ export const MENU = [
                 path: ['/configuration/home-carousel']
             },
             {
+                name: "Utils Variables",
+                iconClasses: 'fas fa-wrench',
+                path: ['/configuration/utils']
+            },
+            {
                 name: 'Privacy Policy',
                 iconClasses: 'fas fa-wrench',
                 path: ['/configuration/privacy-policy']
@@ -120,6 +125,16 @@ export const MENU = [
                 iconClasses: 'fas fa-wrench',
                 path: ['/configuration/terms-and-conditions']
             },
+            {
+                name: "FAQ's",
+                iconClasses: 'fas fa-question',
+                path:['/configuration/faq']
+            },
+            {
+                name: "Help",
+                iconClasses: 'fas fa-wrench',
+                path: ['/configuration/help']
+            }
         ]
     },
     {

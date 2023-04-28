@@ -28,6 +28,7 @@
                           <tr>
                             <th>SL No.</th>
                             <th>Name</th>
+                            <th>Mobile</th>
                             <th>Points Claimed</th>
                             <th>Date</th>
      
@@ -37,6 +38,7 @@
                           <tr *ngFor="let element of transactionData; let i = index" class="table-row">
                             <td>{{i+1}}</td>
                             <td>{{element.NAME}}</td>
+                            <td>{{element.MOBILE_NUMBER}}</td>
                             <td>{{ element.POINTS }}</td>
                             <td>{{ formatDate(element.TRNX_TS) }}</td>
                  

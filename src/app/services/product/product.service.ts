@@ -28,4 +28,12 @@ export class ProductService {
   updateProductImages = (item_id:any, file_object:any) =>{
     return this.http.post(`${environment.url}api/v1/admin/upload_product_image/${item_id}`, file_object)
   } 
+
+  deleteProductImage = (image_id:any) =>{
+    return this.http.delete(`${environment.url}api/v1/admin/product_image/${image_id}`);
+  }
+
+  deleteProduct = (product_id:any) =>{
+    return this.http.delete(`${environment.url}api/v1/admin/product_image/${product_id}`);
+  }
 }

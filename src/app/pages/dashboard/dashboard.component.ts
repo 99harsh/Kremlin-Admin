@@ -9,7 +9,9 @@ export class DashboardComponent implements OnInit{
 
     constructor(private dashboardSerivce: DashboardService){}
 
-    statisticData:any = [];
+    statisticData:any = {
+        ACTIVE_USERS_COUNT:0
+    };
 
     ngOnInit(): void {
         this.initData()

@@ -1,0 +1,89 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Utils</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Configuration</a></li>
+                    <li class="breadcrumb-item active">Utils</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+        <div class="card">
+            <form [formGroup]="conversionForm" (ngSubmit)="setUtilData('conversion_rate')">
+                <div class="card-header">
+                    <h5>Conversion Rate</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <input type="text" formControlName="conversion_rate" class="form-control" placeholder="Enter Conversion Rate">
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button class="btn btn-primary">Update</button>
+                </div>
+                <!-- /.card-footer-->
+            </form>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="card">
+            <form [formGroup]="thresholdForm" (ngSubmit)="setUtilData('threshold_points')">
+                <div class="card-header">
+                    <h5>Threshold Points</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <input type="text" formControlName="threshold_value" class="form-control" placeholder="Enter Threshold Points">
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button class="btn btn-primary">Update</button>
+                </div>
+                <!-- /.card-footer-->
+            </form>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="card">
+            <form [formGroup]="versionForm" (ngSubmit)="setUtilData('version')">
+                <div class="card-header">
+                    <h5>App Version</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <input type="text" formControlName="app_version" class="form-control" placeholder="Enter App Version">
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button class="btn btn-primary">Update</button>
+                </div>
+                <!-- /.card-footer-->
+            </form>
+        </div>
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->

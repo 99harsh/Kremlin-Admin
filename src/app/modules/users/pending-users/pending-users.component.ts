@@ -51,7 +51,7 @@ export class PendingUsersComponent implements OnInit {
     const payload = {
       user_id: this.selectedData.ID,
       action: action === 'Approve' ? "APPROVED" : action === "Reject" ? "REJECTED" : "SUSPENDED",
-      comment: reason
+      remarks: reason
     }
     this.userService.updateUserStatus(payload).subscribe((res:any)=>{
       if(res.status === 200){

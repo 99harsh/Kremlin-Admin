@@ -36,7 +36,7 @@
                         <div class="icon">
                             <i class="fas fa-users"></i>
                         </div>
-                        <a href="#" class="small-box-footer"
+                        <a [routerLink]="['users/active']" class="small-box-footer"
                             >More info <i class="fas fa-arrow-circle-right"></i
                         ></a>
                     </div>
@@ -52,7 +52,7 @@
                     <div class="icon">
                         <i class="fas fa-qrcode"></i>
                     </div>
-                    <a href="#" class="small-box-footer"
+                    <a [routerLink]="['qr/generate']" class="small-box-footer"
                         >More info <i class="fas fa-arrow-circle-right"></i
                     ></a>
                 </div>
@@ -69,7 +69,7 @@
                     <div class="icon">
                         <i class="fas fa-rupee-sign"></i>
                     </div>
-                    <a href="#" class="small-box-footer"
+                    <a [routerLink]="['transaction/pending']" class="small-box-footer"
                         >More info <i class="fas fa-arrow-circle-right"></i
                     ></a>
                 </div>
@@ -86,7 +86,7 @@
                     <div class="icon">
                         <i class="fas fa-rupee-sign"></i>
                     </div>
-                    <a href="#" class="small-box-footer"
+                    <a [routerLink]="['transaction/settled']" class="small-box-footer"
                         >More info <i class="fas fa-arrow-circle-right"></i
                     ></a>
                 </div>

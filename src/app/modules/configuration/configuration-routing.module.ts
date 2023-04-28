@@ -5,6 +5,9 @@ import { MainComponent } from '@modules/main/main.component';
 import { HomeCarouselComponent } from './home-carousel/home-carousel.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
+import { UtilsComponent } from './utils/utils.component';
+import { FaqComponent } from './faq/faq.component';
+import { HelpComponent } from './help/help.component';
 
 const routes: Routes = [{
   path: "",
@@ -23,6 +26,18 @@ const routes: Routes = [{
     {
       path:'home-carousel',
       component:HomeCarouselComponent
+    },
+    {
+      path: 'utils',
+      component:UtilsComponent
+    },
+    {
+      path:'faq',
+      component:FaqComponent
+    },
+    {
+      path: 'help',
+      component:HelpComponent
     }
   ]
 }];

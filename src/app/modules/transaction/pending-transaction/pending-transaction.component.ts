@@ -25,7 +25,7 @@ export class PendingTransactionComponent implements OnInit{
               private toastr: ToastrService){
                 this.approveForm = this.formBuilder.group({
                   transaction_id: new FormControl(null, [Validators.required]),
-                  remark: new FormControl(null)
+                  remarks: new FormControl('', [Validators.required])
                 })
               }
   ngOnInit(): void {
@@ -50,7 +50,7 @@ export class PendingTransactionComponent implements OnInit{
   openModal = (content, element) =>{
     this.selectedUser = element;
     if(this.selectedUser.ACCOUNT_NUMBER === null){
-      this.qrCode = `upi://pay?pa=${element.MOBILE_NUMBER}@paytm&pn=${element.name}&mc='asd'&tid=${element.REDEEM_TRNX_ID}&tr='abc'&tn=%20890&am=${element.AMOUNT}`
+      this.qrCode = `upi://pay?pa=${element.MOBILE_NUMBER}@paytm&pn=${element.NAME}&mc='Kremlin'&tid=${element.REDEEM_TRNX_ID}&tr='Kremlin'&tn=%20890&am=${element.AMOUNT}`
     }
     console.log(this.selectedUser, {size:'lg'})
     this.modalService.open(content, {size: 'lg'});
@@ -63,7 +63,7 @@ export class PendingTransactionComponent implements OnInit{
         const payload = {
           status: action,
           transaction_id: this.approveForm.value.transaction_id,
-          remarks: this.approveForm.value.remark
+          remarks: this.approveForm.value.remarks
         }
         this.txnService.transactionAction(payload, txn_id).subscribe((res:any)=>{
           if(res.status === 200){

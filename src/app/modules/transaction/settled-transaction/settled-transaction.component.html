@@ -28,9 +28,12 @@
                           <tr>
                             <th>SL No.</th>
                             <th>Name</th>
+                            <th>Mobile Number</th>
                             <th>Points Claimed</th>
                             <th>Amount</th>
                             <th>Payment Mode</th>
+                            <th>Transaction ID</th>
+                            <th>Remark</th>
                             <th>Claimed Date</th>
                             <th>Settled Date</th>
                           </tr>
@@ -39,9 +42,12 @@
                           <tr *ngFor="let element of transactionData; let i = index" class="table-row">
                             <td>{{i+1}}</td>
                             <td>{{element.NAME}}</td>
+                            <td>{{ element.MOBILE_NUMBER }}</td>
                             <td>{{element.POINTS}}</td>
                             <td>{{element.AMOUNT}}  ₹</td>
                             <td>{{element.ACCOUNT_NUMBER == null ? 'Paytm' : 'Bank Account'}}</td>
+                            <td>{{element.TRANSACTION_ID}}</td>
+                            <td>{{element.REMARKS}}</td>
                             <td>{{ formatDate(element.TRNX_TS) }}</td>
                             <td>{{ formatDate(element.SETTLE_TS) }}</td>
                           </tr>     
