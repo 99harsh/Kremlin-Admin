@@ -105,7 +105,10 @@
                         <div class="form-row col">
                             <div class="col-md-12">
                                 <label class="mt-2">Remark</label>
-                                <input type="text" class="form-control" formControlName="remark" placeholder="Enter remark (optional)" />
+                                <input type="text" class="form-control" formControlName="remarks" placeholder="Enter remark " />
+                                <div *ngIf="approveForm.get('remarks').touched && approveForm.get('remarks').invalid">
+                                    <span *ngIf="approveForm.get('remarks').hasError('required')" class="text-danger">Please Enter Remark</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -124,7 +127,10 @@
                 <div class="form-row" *ngIf="selectedUser.ACCOUNT_NUMBER != null">
                     <div class="form-group col">
                         <label>Remark</label>
-                        <input type="text" class="form-control" formControlName="remark" placeholder="Enter remark" />
+                        <input type="text" class="form-control" formControlName="remarks" placeholder="Enter remark" />
+                        <div *ngIf="approveForm.get('remarks').touched && approveForm.get('remarks').invalid">
+                            <span *ngIf="approveForm.get('remarks').hasError('required')" class="text-danger">Please Enter Remark</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -206,7 +212,7 @@
                 </div>
           
             </div>
-            <div class="form-row">
+            <div class="form-row" *ngIf="selectedUser.ACCOUNT_NUMBER != null">
                 <div class="form-group col">
                     <label>Transaction ID</label>
                     <input type="text"class="form-control" formControlName="transaction_id" placeholder="Enter Transaction ID">
