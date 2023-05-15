@@ -73,10 +73,10 @@ export class GenerateQrCodeComponent implements OnInit {
   }
 
 
-  downloadQRCode = (batchId: string, value:any) => {
+  downloadQRCode = (batchId: string, value:any, action:string) => {
     let quantity:any = value
     this.isLoading = true;
-    this.qrService.getQRCodeByBatchId(batchId).subscribe((res: any) => {
+    this.qrService.getQRCodeByBatchId(batchId, action).subscribe((res: any) => {
       if (res.status === 200) {
         this.qrCodes = res.data;
         this.download(quantity);
@@ -96,6 +96,7 @@ export class GenerateQrCodeComponent implements OnInit {
       if (mutations.length > 2) {
         const base64DOM: any = document.getElementsByClassName("coolQRCode")
         let zip = new JSZip();
+        console.log("Quantity", quantity, "base64", base64DOM)
         if(quantity == base64DOM.length && started){
           started = false;
           for (let i = 0; i < base64DOM.length; i++) {

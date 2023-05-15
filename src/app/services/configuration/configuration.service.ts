@@ -52,4 +52,8 @@ export class ConfigurationService {
     return this.http.post(`${environment.url}api/v1/admin/faq/${id}`, payload)
   }
 
+  updateCarouselVisiblity = (payload:any) => {
+    return this.http.post(`${environment.url}api/v1/admin/update_carousel_visibility`, payload)
+  }
+
 }

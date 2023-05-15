@@ -25,7 +25,7 @@ export class FaqComponent implements OnInit {
               })
 
               this.editFaqForm = this.fb.group({
-                question: new FormControl('', [Validators.min(10), Validators.max(100), Validators.required]),
+                question: new FormControl('', [Validators.minLength(10), Validators.max(100), Validators.required]),
                 answer: new FormControl('', [Validators.required, Validators.min(10)])
               })
             }
@@ -57,6 +57,7 @@ export class FaqComponent implements OnInit {
           }
         })
     }else{
+      console.log(this.faqForm.get('answer'))
       this.toastr.warning("Please provide all the required information.")
     }
   }

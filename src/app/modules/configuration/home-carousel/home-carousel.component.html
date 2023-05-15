@@ -53,6 +53,7 @@
                 <th>#</th>
                 <th>Image</th>
                 <th>Video URL</th>
+                <th>Status</th>
                 <th>Action</th>
             </thead>
             <tbody>
@@ -66,12 +67,14 @@
                     <td>
                         {{image.VIDEO_URL}}
                     </td>
-                    <td>
-                        <button class="btn btn-danger" (click)="openModal(deleteModal, image)">Delete</button>
+                    <td>{{image.STATUS}}</td>
+                    <td class="d-flex" style="justify-content:center">
+                        <button class="btn btn-danger mr-2" (click)="openModal(deleteModal, image)">Delete</button>
+                        <button class="btn btn-primary" (click)="openModal(visiblityModal, image)">Change Visiblity</button>
                     </td>
                 </tr>
             </tbody>
-        </table>
+        </table>    
     </div>
     <!-- /.card -->
 </section>
@@ -87,5 +90,32 @@
         <button class="btn btn-outline-dark" (click)="modal.close()">Cancel</button>
         <button class="btn btn-danger" (click)="deleteCarosuel()">Delete</button>
     </div>
+</ng-template>
+
+<ng-template #visiblityModal let-modal>
+    <form [formGroup]="editCarouselForm" (ngSubmit)="changeVisiblity()">
+        <div class="modal-header">
+            <h5>Change Product Visiblity</h5>
+        </div>
+        <div class="modal-body">
+            <div class="form-row">
+                <div class="form-group d-flex" style="align-items:center">
+                    
+                    <input type="radio" id="SHOW" (change)="changeSelectOption($event)"  name="visiblity" [checked]="element.STATUS == 'SHOW'" value="SHOW"/>
+                    <label class="m-0 ml-2" for="SHOW">Show</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group d-flex" style="align-items:center">
+                    <input type="radio" id="HIDE" (change)="changeSelectOption($event)" name="visiblity" [checked]="element.STATUS == 'HIDE'" value="HIDE"/>
+                    <label class="m-0 ml-2" for="HIDE">Hide</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+            <button class="btn btn-success">Okay</button>
+        </div>
+    </form>
 </ng-template>
 <!-- /.content -->

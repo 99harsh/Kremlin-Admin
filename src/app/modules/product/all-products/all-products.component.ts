@@ -71,7 +71,13 @@ export class AllProductsComponent implements OnInit{
               private formBuilder: FormBuilder){
                 this.productDetailsForm = this.formBuilder.group({
                   name: new FormControl('', [Validators.required]),
-                  description: new FormControl('', [Validators.required])
+                  description: new FormControl('', [Validators.required]),
+                  key1: new FormControl('', [Validators.required]),
+                  value1: new FormControl('', [Validators.required]),
+                  key2: new FormControl('', [Validators.required]),
+                  value2: new FormControl('', [Validators.required]),
+                  key3: new FormControl('', [Validators.required]),
+                  value3: new FormControl('', [Validators.required]),  
                 })
               }
   ngOnInit(): void {
@@ -103,9 +109,17 @@ export class AllProductsComponent implements OnInit{
     this.productService.getProductDetails(element.PRODUCT_ID).subscribe((res:any)=>{
       if(res.status === 200){
         const product = res.data;
+        const keyFeatures = JSON.parse(product.KEY_FEATURES)
+        const keyArray = Object.keys(keyFeatures);
         this.productDetailsForm.setValue({
           name: product.NAME,
-          description: product.DESCRIPTION
+          description: product.DESCRIPTION,
+          key1: keyArray[0],
+          key2: keyArray[1],
+          key3: keyArray[2],
+          value1: keyFeatures[keyArray[0]],
+          value2: keyFeatures[keyArray[1]], 
+          value3: keyFeatures[keyArray[2]] 
         })
         this.productDetails = res.data;
         console.log("Product Description", this.productDetails)
@@ -137,7 +151,23 @@ export class AllProductsComponent implements OnInit{
     const tid = this.productDetails.PRODUCT_ID
     console.log(this.imageArray.length)
     if(this.productDetails.NAME != this.productDetailsForm.value.name || this.productDetails.DESCRIPTION != this.productDetailsForm.value.description){
-    this.productService.updateProductDescription(this.productDetailsForm.value, tid).subscribe((res:any)=>{
+    let pdf:any = this.productDetailsForm.value;
+
+    let obj = {}
+    obj[pdf.key1] = pdf.value1;
+    obj[pdf.key2] = pdf.value2;
+    obj[pdf.key3] = pdf.value3;
+  
+    console.log(obj);
+    
+    delete pdf.key1
+    delete pdf.key2
+    delete pdf.key3
+    delete pdf.value1
+    delete pdf.value2
+    delete pdf.value3
+    pdf.key_features = JSON.stringify(obj);
+    this.productService.updateProductDescription(pdf, tid).subscribe((res:any)=>{
       if(res.status === 200){
         if(this.imageArray.length>0){
           this.updateProductImages();

@@ -39,7 +39,14 @@
                     </div>
                     <div class="form-group">
                         <label for="value">Value</label>
-                        <input id="value" type="text" class="form-control" formControlName="value" placeholder="Enter Value">
+                        <!-- <input id="value" type="text" class="form-control" formControlName="value" placeholder="Enter Value"> -->
+                        <select class="form-control" formControlName="value">
+                            <option [value]="5">5</option>
+                            <option [value]="10">10</option>
+                            <option [value]="20">20</option>
+                            <option [value]="50">50</option>
+                            <option [value]="100">100</option>
+                        </select>
                         <div *ngIf="qrCodeForm.get('value').touched && qrCodeForm.get('value').invalid">
                             <span *ngIf="qrCodeForm.get('value').hasError('required')" class="text-danger">Please Enter Value</span>
                             <span *ngIf="qrCodeForm.get('value').hasError('pattern') || 
@@ -95,8 +102,9 @@
                             <td>{{element.QR_COUNTS}}</td>
                             <td>{{element.VALUE}}</td>
                             <td>{{dateFormat(element.GENERATION_TS)}}</td>
-                            <td>
-                                <button class="btn btn-success"(click)="downloadQRCode(element.BATCH_ID, element.QR_COUNTS)">Download</button>
+                            <td class="d-flex" style="justify-content:center">
+                                <button class="btn btn-success mr-2"(click)="downloadQRCode(element.BATCH_ID, element.QR_COUNTS, 'all')">Download All</button>
+                                <button class="btn btn-success ml-2"(click)="downloadQRCode(element.BATCH_ID, (element.QR_COUNTS - element.SCANNED_QR_COUNT), 'active')">Download Un-Scanned</button>
                             </td>
                           </tr>     
                         </tbody>

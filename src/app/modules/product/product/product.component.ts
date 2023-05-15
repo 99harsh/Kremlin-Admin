@@ -61,7 +61,13 @@ export class ProductComponent implements OnInit{
   constructor(private formBuilder: FormBuilder, private productService: ProductService, private toastr: ToastrService){
     this.productForm = formBuilder.group({
       name: new FormControl(null, [Validators.min(3), Validators.max(50), Validators.required]),
-      description: new FormControl(null, [Validators.min(10), Validators.required])
+      description: new FormControl(null, [Validators.min(10), Validators.required]),
+      key1: new FormControl(null, Validators.required),
+      key2: new FormControl(null, Validators.required),
+      key3: new FormControl(null, Validators.required),
+      value1: new FormControl(null, Validators.required),
+      value2: new FormControl(null, Validators.required),
+      value3: new FormControl(null, Validators.required)
     })
   }
 
@@ -87,8 +93,24 @@ export class ProductComponent implements OnInit{
 
   addNewProduct = () =>{
     if(this.productForm.valid && this.images.length > 0){
+      let pdf:any = this.productForm.value;
+
+    let obj = {}
+    obj[pdf.key1] = pdf.value1;
+    obj[pdf.key2] = pdf.value2;
+    obj[pdf.key3] = pdf.value3;
+  
+    console.log(obj);
+    
+    delete pdf.key1
+    delete pdf.key2
+    delete pdf.key3
+    delete pdf.value1
+    delete pdf.value2
+    delete pdf.value3
+    pdf.key_features = JSON.stringify(obj);
       console.log(this.productForm.value)
-        this.productService.addNewProduct(this.productForm.value).subscribe((res:any)=>{
+        this.productService.addNewProduct(pdf).subscribe((res:any)=>{
           if(res.status === 200){
             const product_id = res.product_id;
 

@@ -34,6 +34,6 @@ export class ProductService {
   }
 
   deleteProduct = (product_id:any) =>{
-    return this.http.delete(`${environment.url}api/v1/admin/product_image/${product_id}`);
+    return this.http.delete(`${environment.url}api/v1/admin/product/${product_id}`);
   }
 }

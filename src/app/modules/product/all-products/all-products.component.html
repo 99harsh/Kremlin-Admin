@@ -111,6 +111,35 @@
         </div>
         <div class="form-row">
             <div class="form-group col">
+                <label>Key Features</label>
+                <div class="form-row row">
+                    <div class="form-group col">
+                        <input type="text" formControlName="key1" class="form-control" placeholder="Enter Feature Name">
+                    </div>
+                    <div class="form-group col">
+                        <input type="text" formControlName="value1" class="form-control" placeholder="Enter Feature Value">
+                    </div>
+                </div>
+                <div class="form-row row">
+                    <div class="form-group col">
+                        <input type="text" formControlName="key2" class="form-control" placeholder="Enter Feature Name">
+                    </div>
+                    <div class="form-group col">
+                        <input type="text" formControlName="value2" class="form-control" placeholder="Enter Feature Value">
+                    </div>
+                </div>
+                <div class="form-row row">
+                    <div class="form-group col">
+                        <input type="text" formControlName="key3" class="form-control" placeholder="Enter Feature Name">
+                    </div>
+                    <div class="form-group col">
+                        <input type="text" formControlName="value3" class="form-control" placeholder="Enter Feature Value">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
                 <label>Product Images</label>
                 <input type="file" (change)="selectImage($event)" multiple class="form-control">
             </div>  

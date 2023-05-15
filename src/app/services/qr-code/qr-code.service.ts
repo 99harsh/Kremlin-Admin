@@ -16,7 +16,7 @@ export class QrCodeService {
     return this.http.get(`${environment.url}api/v1/admin/qr_codes`)
   }
 
-  getQRCodeByBatchId = (batch_id:string) => {
-    return this.http.get(`${environment.url}api/v1/admin/qr_codes/${batch_id}`)
+  getQRCodeByBatchId = (batch_id:string, action:string) => {
+    return this.http.get(`${environment.url}api/v1/admin/qr_codes/${batch_id}/${action}`)
   }
 }
