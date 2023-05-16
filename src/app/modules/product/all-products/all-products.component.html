@@ -48,7 +48,8 @@
                             <td [ngClass]="[element.STATUS === 'AVAILABLE' ? 'text-success' : 'text-danger']">{{element.STATUS}}</td>
                             <td>
                                 <button class="btn btn-warning mr-2" (click)="openModal(editModal, element)">Edit</button>
-                                <button class="btn btn-danger" (click)="openModal(deleteModal, element)">Delete</button>
+                                <button class="btn btn-danger mr-2" (click)="openModal(deleteModal, element)">Delete</button>
+                                <button class="btn btn-primary my-2" (click)="openModal(changeVisiblityModal, element)">Change Visiblity</button>
                             </td>
                           </tr>     
                         </tbody>
@@ -88,6 +89,39 @@
     <div class="modal-footer">
         <button class="btn btn-outline-dark" (click)="modal.close()">Close</button>
         <button class="btn btn-danger" (click)="deleteProduct()">Delete</button>
+    </div>
+</ng-template>
+
+<ng-template #changeVisiblityModal let-modal>
+    <div class="modal-header">
+        <h5>Change Product Visiblity</h5>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label>Name</label>
+            <input class="form-control" type="text" [value]="[productDetails.NAME]" disabled/>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="6" type="text" disabled [innerHTML]="[productDetails.DESCRIPTION]" ></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group d-flex" style="align-items:center">
+                
+                <input type="radio" id="SHOW" (change)="changeSelectOption($event)"  name="visiblity" [checked]="productDetails.STATUS == 'AVAILABLE'" value="available"/>
+                <label class="m-0 ml-2" for="SHOW">Show</label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group d-flex" style="align-items:center">
+                <input type="radio" id="HIDE" (change)="changeSelectOption($event)" name="visiblity" [checked]="productDetails.STATUS == 'HIDDEN'" value="hidden"/>
+                <label class="m-0 ml-2" for="HIDE">Hide</label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+            <button class="btn btn-success" (click)="updateProductVisiblity()">Okay</button>
     </div>
 </ng-template>
 

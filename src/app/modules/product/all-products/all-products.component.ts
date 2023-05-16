@@ -7,6 +7,7 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'environments/environment';
+import { element } from 'protractor';
 @Component({
   selector: 'app-all-products',
   templateUrl: './all-products.component.html',
@@ -189,6 +190,14 @@ export class AllProductsComponent implements OnInit{
 
   }
 
+    changeSelect:any = "";
+
+    changeSelectOption = (event) =>{
+    
+    this.changeSelect = event.target.value;
+    console.log("SELECT ", this.changeSelect)
+  }
+
   updateProductImages = () =>{
     const tid = this.productDetails.PRODUCT_ID
     this.productService.updateProductImages(tid, this.imageForm).subscribe((res:any)=>{
@@ -199,6 +208,24 @@ export class AllProductsComponent implements OnInit{
       }else{
         this.toastr.error("Something Went Wrong! Backend Error")
         this.modalSerivce.dismissAll()
+      }
+    })
+  }
+
+  updateProductVisiblity(){
+    const payload = {
+      PRODUCT_ID: this.productDetails.PRODUCT_ID,
+      visibility: this.changeSelect
+    }
+    console.log("Payload", payload)
+    this.productService.updateProductVisiblity(payload).subscribe((res:any)=>{
+      if(res.status == 200){
+        
+        this.toastr.success("Product Visiblity Updated Successfully!");
+        this.initData()
+        this.modalSerivce.dismissAll();
+      }else{
+        this.toastr.error("Something Went Wrong! Backend Error!");
       }
     })
   }

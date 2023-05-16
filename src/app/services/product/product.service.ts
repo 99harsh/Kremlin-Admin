@@ -36,4 +36,8 @@ export class ProductService {
   deleteProduct = (product_id:any) =>{
     return this.http.delete(`${environment.url}api/v1/admin/product/${product_id}`);
   }
+
+  updateProductVisiblity = (payload:any) => {
+    return this.http.post(`${environment.url}api/v1/admin/update_product_visibility/${payload.PRODUCT_ID}`, {visibility: payload.visibility})
+  }
 }
